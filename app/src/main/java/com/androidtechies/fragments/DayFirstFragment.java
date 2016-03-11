@@ -1,6 +1,7 @@
 package com.androidtechies.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.androidtechies.gates16.EventActivity;
 import com.androidtechies.gates16.R;
 import com.androidtechies.model.EventItem;
 import com.androidtechies.model.ListAdapter;
@@ -45,6 +48,14 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
         ListView listView = (ListView) view.findViewById(R.id.list1);
         ListAdapter adapter = new ListAdapter(context,event);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getActivity(), EventActivity.class);
+//                i.putExtra("event_image", )
+                startActivity(i);
+            }
+        });
         return  view;
     }
 
