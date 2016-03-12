@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidtechies.gates16.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class SocietesAdapter extends RecyclerView.Adapter<SocietesAdapter.Societ
     @Override
     public void onBindViewHolder(SocietyViewHolder holder, int position) {
         holder.imageTitle.setText(arr.get(position).getTitle());
-        holder.imageView.setImageResource(arr.get(position).getImage());
+        Picasso.with(context).load(arr.get(position).getImage()).into(holder.imageView);
     }
 
     @Override

@@ -27,11 +27,11 @@ public class SponsorFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_sponsor,container,false);
         GridView gridView=(GridView)view.findViewById(R.id.gridView);
-        ArrayList<ImageItem> arr=new ArrayList<>();
-        for(int i=0;i<20;i++)
-        {   arr.add(new ImageItem(R.mipmap.ic_launcher,i+"th Grid"));
-        }
-        gridView.setAdapter(new GridViewAdapter(context,arr));
+//        ArrayList<ImageItem> arr=new ArrayList<>();
+//        for(int i=0;i<20;i++)
+//        {   arr.add(new ImageItem(R.mipmap.ic_launcher,i+"th Grid"));
+//        }
+//        gridView.setAdapter(new GridViewAdapter(context,arr));
         return view;
     }
 
