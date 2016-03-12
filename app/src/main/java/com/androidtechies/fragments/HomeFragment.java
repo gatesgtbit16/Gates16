@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -21,12 +22,21 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.androidtechies.gates16.R;
-import com.androidtechies.model.GridViewAdapter;
 import com.androidtechies.model.ImageItem;
 import com.androidtechies.model.SocietesAdapter;
+import com.androidtechies.utils.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,11 +45,51 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment{
-    Toolbar toolbar;
-    Context context;
-    ImageView indicator1, indicator2, indicator3;
+    private Toolbar toolbar;
+    private Context context;
+    private ArrayList<ImageItem> societyArray = null;
+    private String baseImageUrl = "http://gatesapi.herokuapp.com/img/icons/";
+    private ImageView indicator1, indicator2, indicator3;
+    private static String TAG = "HomeFragment";
+    private RecyclerView myList;
+    private String societyUrl = "http://gatesapi.herokuapp.com/SocietesCard?q=societies";
     int i;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        societyArray = new ArrayList<>();
+
+        StringRequest request = new StringRequest(Request.Method.GET, societyUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0 ; i < array.length(); i++){
+                                JSONObject object = array.optJSONObject(i);
+                                String tempTitle = object.getString("sname");
+                                String tempUrl = baseImageUrl + object.getString("imgurl");
+
+                                Log.e(TAG, "" + tempTitle + " " +tempUrl);
+                                societyArray.add(new ImageItem(tempUrl, tempTitle));
+                            }
+                            myList.setAdapter(new SocietesAdapter(context, societyArray));
+
+                        } catch (JSONException e) {
+                            Log.v(TAG, ""+ e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "E"+ error, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        VolleySingleton.getInstance(getActivity().getApplicationContext())
+                .getRequestQueue().add(request);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,19 +174,9 @@ public class HomeFragment extends Fragment{
         TextView TV=(TextView)view.findViewById(R.id.gatesIntro);
         Spanned sp= Html.fromHtml(getResources().getString(R.string.gtbit));
         TV.setText(sp);
-
-        //TODO: Figure Out How to reuse Sponser Adapter and Items Here
-
-        //GridView gridView=(GridView)view.findViewById(R.id.gridView2);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView myList = (RecyclerView)view.findViewById(R.id.societies);
+        myList = (RecyclerView)view.findViewById(R.id.societies);
         myList.setLayoutManager(layoutManager);
-        ArrayList<ImageItem> arr=new ArrayList<>();
-        for(int i=0;i<10;i++)
-        {   arr.add(new ImageItem(R.mipmap.ic_launcher,i+"th Grid"));
-        }
-        myList.setAdapter(new SocietesAdapter(context,arr));
-        //gridView.setAdapter(new GridViewAdapter(context,arr));
         return view;
     }
 

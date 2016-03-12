@@ -1,20 +1,20 @@
 package com.androidtechies.model;
 
 public class ImageItem {
-    private int image;
+    private String imageUrl;
     private String title;
 
-    public ImageItem(int image, String title) {
-        this.image = image;
+    public ImageItem(String imageUrl, String title) {
+        this.imageUrl = imageUrl;
         this.title = title;
     }
 
-    public int getImage() {
-        return image;
+    public String getImage() {
+        return imageUrl;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImage(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {

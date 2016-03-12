@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidtechies.gates16.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,7 +51,7 @@ public class GridViewAdapter extends BaseAdapter {
         TextView imageTitle = (TextView) row.findViewById(R.id.text);
         ImageView imageView= (ImageView) row.findViewById(R.id.image);
         imageTitle.setText(data.get(position).getTitle());
-        imageView.setImageResource(data.get(position).getImage());
+        Picasso.with(context).load(data.get(position).getImage()).into(imageView);
         return row;
     }
 }
