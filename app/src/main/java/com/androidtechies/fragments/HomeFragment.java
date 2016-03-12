@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment{
     private static String TAG = "HomeFragment";
     private RecyclerView myList;
     private String societyUrl = "http://gatesapi.herokuapp.com/SocietesCard?q=societies";
+    int i;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -131,22 +132,37 @@ public class HomeFragment extends Fragment{
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+                switch (position)
+
+                {
+                    case 0:
+                        indicator1.setImageResource(R.drawable.selected_indicator);
+                        break;
+                    case 1:
+                        indicator2.setImageResource(R.drawable.selected_indicator);
+                        break;
+                    case 2:
+                        indicator3.setImageResource(R.drawable.selected_indicator);
+                        break;
+
+                }
+
+                if(i!=position)
+                {
+                    indicator1.setImageResource(R.drawable.unselected_indicator);
+                    indicator2.setImageResource(R.drawable.unselected_indicator);
+                    indicator3.setImageResource(R.drawable.unselected_indicator);
+
+                }
+
+
             }
 
             @Override
             public void onPageSelected(int position) {
 
-                switch (position)
 
-                {
-                    case 0: indicator1.setImageResource(R.drawable.selected_indicator);
-                        break;
-                    case 1: indicator2.setImageResource(R.drawable.selected_indicator);
-                        break;
-                    case 2: indicator3.setImageResource(R.drawable.selected_indicator);
-                        break;
-
-                }
+                i=position;
 
             }
 
